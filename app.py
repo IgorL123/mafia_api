@@ -49,12 +49,14 @@ def action():  # put application's code here
     cur = db.cursor
 
     if killedUserID != healedUserID:
-        cur.execute(f"UPDATE Users SET isAlive = false WHERE TrueUserID = '{killedUserID}'")
+        cur.execute(f"Select UserID from chats join userschats uc on uc.chatid = chats.chatid join "
+                f"users on users.userid = uc.userid where truechatid = '{trueChatID}' and TrueUserID = '{killedUserID}'")
+        id = cur.fetchall()[0]
+        cur.execute(f"UPDATE Users SET isAlive = false WHERE UserID = '{id}'")
         response["killedUserId"] = killedUserID
 
     cur.execute(f"SELECT role FROM users WHERE TrueUserID ='{checkedUserID}';")
-    row = cur.fetchall()
-    role = row[0]
+    role = cur.fetchall()[0]
 
     if role == 4:
         response["checkedRole"] = True
