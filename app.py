@@ -24,7 +24,7 @@ def action():  # put application's code here
 
     if killedUserID != healedUserID:
         cur.execute(f"Select UserID from chats join userschats uc on uc.chatid = chats.chatid join "
-                f"users on users.userid = uc.userid where truechatid = '{trueChatID}' and TrueUserID = '{killedUserID}'")
+                    f"users on users.userid = uc.userid where truechatid = '{trueChatID}' and TrueUserID = '{killedUserID}'")
         id = cur.fetchall()[0]
         cur.execute(f"UPDATE Users SET isAlive = false WHERE UserID = '{id}'")
         response["killedUserId"] = killedUserID
@@ -48,15 +48,14 @@ def create():
     db.close(cursor)
 
 
-@app.route('/start_game')
+@app.route('/start_game', methods = ["POST"])
 def start():  # Команда принимает на вход
-    pass
-
-
-@app.route('/action')
-def action():
-    pass
-
+    TCI = request.json['chatID']
+    userlist = request.json['usderIDs']
+    cursor = db.connection.cursor()
+    for id in userlist:
+        db.query_ins_user(id, curs)
+    db.close()
 
 if __name__ == '__main__':
     app.run()
