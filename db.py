@@ -3,12 +3,12 @@ import psycopg2
 
 db_params = {
     'host': '51.250.68.42',
-    'database': 'test',
+    'database': 'postgres',
     'user': 'curator',
     'password': '4oumQk'
 }
 
-# connection = psycopg2.connect(**db_params) #запускаем один раз
+connection = psycopg2.connect(**db_params)  # запускаем один раз
 
 
 def conn(conn=connection):
