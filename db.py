@@ -11,12 +11,12 @@ db_params = {
 connection = psycopg2.connect(**db_params)  # запускаем один раз
 
 
-def query_ins_user(tui, curs=cursor):
+def query_ins_user(tui, curs):
     try:
         # Запрос добавления пользователя
         curs.execute(
             f"""INSERT into public.Users(TrueUserID, role, isAlive) values ({tui}, 0)""")
-        conn.commit()
+        connection.commit()
     except Exception as e:
         print("Ошибка:", e)
 
@@ -25,7 +25,7 @@ def query_ins_chat(tci, curs=cursor):
     try:  # Запрос добавления чата
         curs.execute(
             f"""INSERT into public.Chats(TrueChatID, StateID) values ({tci}, 0)""")
-        conn.commit()
+        connection.commit()
     except Exception as e:
         print("Ошибка:", e)
 
@@ -48,5 +48,5 @@ def query_change(x):
     pass
 
 
-def close(cur=cursor, conn=connection):
+def close(cur=cursor, connection=connection):
     cursor.close()
