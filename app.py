@@ -12,7 +12,7 @@ def hello_world():  # put application's code here
 @app.route('/create_game', methods=["POST"])
 def create():
     TCI = request.json['chatID']
-    curs = db.conn()
+    cursor = db.connection.cursor()
     db.query_ins_chat(TCI, curs)
     db.close(curs)
 

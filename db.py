@@ -11,11 +11,6 @@ db_params = {
 connection = psycopg2.connect(**db_params)  # запускаем один раз
 
 
-def conn(conn=connection):
-    cursor = conn.cursor()
-    return cursor
-
-
 def query_ins_user(tui, curs=cursor):
     try:
         # Запрос добавления пользователя
