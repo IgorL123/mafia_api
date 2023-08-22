@@ -15,8 +15,8 @@ def action():  # put application's code here
     checkedUserID = data['CheckedUserID']
 
     response = {
-        "killedUserId": "",
-        "isEndGame": "",
+        "killedUserId": None,
+        "isEndGame": None,
         "checkedRole": False
     }
 
@@ -40,22 +40,17 @@ def action():  # put application's code here
     return jsonify(response), 200
 
 
-@app.route('/create_game', methods=["POST"])
+@app.route('/create_chat', methods=["POST"])
 def create():
-    TCI = request.json['chatID']
+    tci = request.json['chatID']
     cursor = db.connection.cursor()
-    db.query_ins_chat(TCI, cursor)
-    db.close(cursor)
+    db.query_ins_chat(tci, cursor)
+    return 'ok', 200
 
 
-@app.route('/start_game')
+@app.route('/start_game', methods=["POST"])
 def start():  # Команда принимает на вход
-    pass
-
-
-@app.route('/action')
-def action():
-    pass
+    return '', 501
 
 
 if __name__ == '__main__':

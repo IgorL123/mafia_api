@@ -23,4 +23,4 @@ def isEnd(cur, trueChatID):
     elif m >= len(roles) - m:
         return "mafia"
 
-    return ""
+    return None
