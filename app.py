@@ -13,8 +13,8 @@ def hello_world():  # put application's code here
 def create():
     TCI = request.json['chatID']
     cursor = db.connection.cursor()
-    db.query_ins_chat(TCI, curs)
-    db.close(curs)
+    db.query_ins_chat(TCI, cursor)
+    db.close(cursor)
 
 
 @app.route('/start_game')
