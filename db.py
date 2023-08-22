@@ -43,7 +43,7 @@ def query_sel(x, curs = cursor):
 
 def query_change(x):
     # Написать выдачу резов по ролям
-    return 0
+    pass
 
 
 def close(cur = cursor, conn = connection):
