@@ -8,30 +8,34 @@ db_params = {
     'password': '4oumQk'
 }
 
-connection = psycopg2.connect(**db_params)
-cursor = connection.cursor()
+# connection = psycopg2.connect(**db_params) #запускаем один раз
 
 
-def query_ins_user(x, curs=cursor):
+def conn(conn=connection):
+    cursor = conn.cursor()
+    return cursor
+
+
+def query_ins_user(tui, curs=cursor):
     try:
         # Запрос добавления пользователя
         curs.execute(
-            f"""INSERT into public.Users(TrueUserID, role, isAlive) values ({x}, 0)""")
-        curs.commit()
+            f"""INSERT into public.Users(TrueUserID, role, isAlive) values ({tui}, 0)""")
+        conn.commit()
     except Exception as e:
         print("Ошибка:", e)
 
 
-def query_ins_chat(x, curs=cursor):
+def query_ins_chat(tci, curs=cursor):
     try:  # Запрос добавления чата
         curs.execute(
-            f"""INSERT into public.Chats(TrueChatID, StateID) values ({x}, 0)""")
-        curs.commit()
+            f"""INSERT into public.Chats(TrueChatID, StateID) values ({tci}, 0)""")
+        conn.commit()
     except Exception as e:
         print("Ошибка:", e)
 
 
-def query_sel(x, curs=cursor):
+def query_sel(query, curs=cursor):
     try:
         # Запрос вывода из БД
         curs.execute("SELECT * FROM chats")
@@ -51,4 +55,3 @@ def query_change(x):
 
 def close(cur=cursor, conn=connection):
     cursor.close()
-    connection.close()

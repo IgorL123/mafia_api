@@ -1,5 +1,5 @@
 from flask import Flask, request
-# import db
+import db
 
 app = Flask(__name__)
 
@@ -11,8 +11,10 @@ def hello_world():  # put application's code here
 
 @app.route('/create_game', methods=["POST"])
 def create():
-    TCI = request.json
-    db.query_ins_chat(TCI)
+    TCI = request.json['chatID']
+    curs = db.conn()
+    db.query_ins_chat(TCI, curs)
+    db.close(curs)
 
 
 @app.route('/start_game')
