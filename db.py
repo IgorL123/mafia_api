@@ -3,7 +3,7 @@ import psycopg2
 
 db_params = {
     'host': '51.250.68.42',
-    'database': 'test',
+    'database': 'postgres',
     'user': 'curator',
     'password': '4oumQk'
 }
@@ -15,7 +15,9 @@ try:
 
     # Ваш код выполнения запросов
 
-    cursor.execute("SELECT * FROM chats")
+    cursor.execute(f"Select role from chats join userschats uc on uc.chatid = "
+                f"chats.chatid join users on users.userid = uc.userid where truechatid = '{7656}' and isAlive = true")
+
     rows = cursor.fetchall()
 
     for row in rows:
