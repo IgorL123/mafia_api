@@ -21,7 +21,7 @@ def query_ins_user(tui, curs):
         print("Ошибка:", e)
 
 
-def query_ins_chat(tci, curs=cursor):
+def query_ins_chat(tci, curs):
     try:  # Запрос добавления чата
         curs.execute(
             f"""INSERT into public.Chats(TrueChatID, StateID) values ({tci}, 0)""")
@@ -30,7 +30,7 @@ def query_ins_chat(tci, curs=cursor):
         print("Ошибка:", e)
 
 
-def query_sel(query, curs=cursor):
+def query_sel(query, curs):
     try:
         # Запрос вывода из БД
         curs.execute("SELECT * FROM chats")
@@ -48,5 +48,5 @@ def query_change(x):
     pass
 
 
-def close(cur=cursor, connection=connection):
+def close(cur):
     cursor.close()
