@@ -48,7 +48,7 @@ def create():
     db.close(cursor)
 
 
-@app.route('/start_game', methods = ["POST"])
+@app.route('/start_game', methods=["POST"])
 def start():  # Команда принимает на вход
     TCI = request.json['chatID']
     userlist = request.json['usderIDs']
@@ -56,6 +56,7 @@ def start():  # Команда принимает на вход
     for id in userlist:
         db.query_ins_user(id, curs)
     db.close()
+
 
 if __name__ == '__main__':
     app.run()

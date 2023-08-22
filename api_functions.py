@@ -1,3 +1,6 @@
+from random import shuffle
+
+
 def isEnd(cur, trueChatID):
     # cur.execute(f"SELECT ChatID FROM Chats WHERE TrueChatID = '{trueChatID}'")
     # row = cur.fetchall()
@@ -24,3 +27,14 @@ def isEnd(cur, trueChatID):
         return "mafia"
 
     return ""
+
+
+def role_cnt(user_count):
+    ls = [0, 0, 1, 1, 0]
+    ls[4] = user_count//4
+    ls[1] = user_count - ls[4]
+    return ls
+
+
+def role_distribution(userIDs, count_r):
+    pass
