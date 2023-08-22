@@ -9,22 +9,46 @@ db_params = {
 }
 
 
-try:
-    connection = psycopg2.connect(**db_params)
-    cursor = connection.cursor()
+connection = psycopg2.connect(**db_params)  # запускаем один раз
 
-    # Ваш код выполнения запросов
 
-    cursor.execute(f"Select role from chats join userschats uc on uc.chatid = "
-                f"chats.chatid join users on users.userid = uc.userid where truechatid = '{7656}' and isAlive = true")
+def query_ins_user(tui, curs):
+    try:
+        # Запрос добавления пользователя
+        curs.execute(
+            f"""INSERT into public.Users(TrueUserID, role, isAlive) values ({tui}, 0)""")
+        connection.commit()
+    except Exception as e:
+        print("Ошибка:", e)
 
-    rows = cursor.fetchall()
 
-    for row in rows:
-        print(row)
+def query_ins_chat(tci, curs):
+    try:  # Запрос добавления чата
+        curs.execute(
+            f"""INSERT into public.Chats(TrueChatID, StateID) values ({tci}, 0)""")
+        connection.commit()
+    except Exception as e:
+        print("Ошибка:", e)
 
+
+def query_sel(query, curs):
+    try:
+        # Запрос вывода из БД
+        curs.execute("SELECT * FROM chats")
+        rows = curs.fetchall()
+
+        # for row in rows:
+        #     print(row)
+
+    except Exception as e:
+        print("Ошибка:", e)
+
+
+def query_change(x):
+    # Написать выдачу резов по ролям
+    pass
+
+
+def close(cur):
     cursor.close()
-    connection.close()
 
-except Exception as e:
-    print("Ошибка:", e)

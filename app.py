@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 import db
 import api_functions
 
+
 app = Flask(__name__)
 
 
@@ -37,6 +38,24 @@ def action():  # put application's code here
     response["isEndGame"] = api_functions.isEnd(cur, trueChatID)
 
     return jsonify(response), 200
+
+
+@app.route('/create_game', methods=["POST"])
+def create():
+    TCI = request.json['chatID']
+    cursor = db.connection.cursor()
+    db.query_ins_chat(TCI, cursor)
+    db.close(cursor)
+
+
+@app.route('/start_game')
+def start():  # Команда принимает на вход
+    pass
+
+
+@app.route('/action')
+def action():
+    pass
 
 
 if __name__ == '__main__':
