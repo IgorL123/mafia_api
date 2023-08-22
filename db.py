@@ -8,6 +8,7 @@ db_params = {
     'password': '4oumQk'
 }
 
+
 connection = psycopg2.connect(**db_params)  # запускаем один раз
 
 
@@ -50,3 +51,4 @@ def query_change(x):
 
 def close(cur):
     cursor.close()
+
