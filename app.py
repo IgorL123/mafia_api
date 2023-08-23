@@ -51,11 +51,14 @@ def create():
 @app.route('/start_game', methods=["POST"])
 def start():  # Команда принимает на вход
     TCI = request.json['chatID']
-    userlist = request.json['usderIDs']
+    userlist = request.json['userIDs']
     cursor = db.connection.cursor()
-    for id in userlist:
+    for idi in userlist:
         db.query_ins_user(id, curs)
     db.close()
+    resp = api_functions.role_distribution(userlist)
+    return ("", resp)
+
 
 
 if __name__ == '__main__':

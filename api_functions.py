@@ -1,4 +1,4 @@
-from random import shuffle
+import random
 
 
 def isEnd(cur, trueChatID):
@@ -29,12 +29,19 @@ def isEnd(cur, trueChatID):
     return ""
 
 
-def role_cnt(user_count):
+def role_distribution(userIDs):
+    user_count = len(userIDs)
+    userIDs = list(userIDs)
+    resp = {}
     ls = [0, 0, 1, 1, 0]
     ls[4] = user_count//4
-    ls[1] = user_count - ls[4]
-    return ls
+    ls[1] = user_count - ls[4]-2
+    random.shuffle(userIDs)
+    for i in range(5):
+        for j in range(ls[i]):
+            print(type(userIDs))
+            resp[userIDs.pop()] = str(i)
 
+    return resp
 
-def role_distribution(userIDs, count_r):
-    pass
+    # [0, 4, 1, 1, 2]
