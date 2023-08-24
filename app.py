@@ -24,7 +24,7 @@ def action():  # put application's code here
 
     if killedUserID != healedUserID:
         cur.execute(f"Select UserID from chats join userschats uc on uc.chatid = chats.chatid join "
-                f"users on users.userid = uc.userid where truechatid = '{trueChatID}' and TrueUserID = '{killedUserID}'")
+                    f"users on users.userid = uc.userid where truechatid = '{trueChatID}' and TrueUserID = '{killedUserID}'")
         id = cur.fetchall()[0]
         cur.execute(f"UPDATE Users SET isAlive = false WHERE UserID = '{id}'")
         response["killedUserId"] = killedUserID
@@ -50,7 +50,15 @@ def create():
 
 @app.route('/start_game', methods=["POST"])
 def start():  # Команда принимает на вход
-    return '', 501
+    TCI = request.json['chatID']
+    userlist = request.json['userIDs']
+    cursor = db.connection.cursor()
+    for idi in userlist:
+        db.query_ins_user(id, cursor)
+    db.close(cursor)
+    resp = api_functions.role_distribution(userlist)
+    return "", resp
+
 
 
 if __name__ == '__main__':
