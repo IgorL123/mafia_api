@@ -57,7 +57,7 @@ def start():  # Команда принимает на вход
         db.query_ins_user(id, curs)
     db.close()
     resp = api_functions.role_distribution(userlist)
-    return ("", resp)
+    return "", resp
 
 
 
