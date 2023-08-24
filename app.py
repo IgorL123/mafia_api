@@ -54,11 +54,10 @@ def start():  # Команда принимает на вход
     userlist = request.json['userIDs']
     cursor = db.connection.cursor()
     for idi in userlist:
-        db.query_ins_user(id, curs)
-    db.close()
+        db.query_ins_user(id, cursor)
+    db.close(cursor)
     resp = api_functions.role_distribution(userlist)
     return "", resp
-
 
 
 if __name__ == '__main__':

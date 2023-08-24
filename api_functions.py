@@ -29,19 +29,22 @@ def isEnd(cur, trueChatID):
     return ""
 
 
-def role_distribution(userIDs):
+def role_distribution(userIDs):  # Распределение ролей
     user_count = len(userIDs)
+    # Сначала нам необходимо понять, сколько каких ролей будет в зависимости от кол-ва игроков
     userIDs = list(userIDs)
-    resp = {}
+    resp = {}  # Инициализируем будущий ответ(в формате словаря {ID : Роль})
     ls = [0, 0, 1, 1, 0]
+    # Массив с ролями, где индекс - роль (0 - inactive, 1 - civil, 2 - doc, 3 - comm, 4 - maf), док и ком всегда один
     ls[4] = user_count//4
+    # Мафии вычисляются, как кол-во игроков//4, остальные мирные
     ls[1] = user_count - ls[4]-2
+    # Перемешиваем массив чтоб постоянно одни и те же роли не выпадали
     random.shuffle(userIDs)
     for i in range(5):
         for j in range(ls[i]):
-            print(type(userIDs))
+            # Ну и, пробегая по каждой роли, убираем из массива один ID,
             resp[userIDs.pop()] = str(i)
+            # присваивая ему роль, добавляя в словарь вывода
 
     return resp
-
-    # [0, 4, 1, 1, 2]
