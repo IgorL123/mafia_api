@@ -51,3 +51,4 @@ def query_change(x):
 
 def close(cur):
     cur.close()
+
