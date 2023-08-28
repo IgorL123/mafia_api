@@ -1,6 +1,5 @@
 import psycopg2
 
-
 db_params = {
     'host': '51.250.68.42',
     'database': 'postgres',

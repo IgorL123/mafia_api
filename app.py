@@ -2,17 +2,17 @@ from flask import Flask, request, jsonify
 import db
 import api_functions
 
-
 app = Flask(__name__)
 
 
 @app.route('/action', methods=["POST"])
-def action():  # put application's code here
+def action():
+    # TODO: обработка ошибок + логи
     data = request.json
-    trueChatID = data['chatID']
-    killedUserID = data['KilledUserID']
-    healedUserID = data['HealedUserID']
-    checkedUserID = data['CheckedUserID']
+    true_chat_id = data['chatID']
+    killed_user_id = data['KilledUserID']
+    healed_user_id = data['HealedUserID']
+    checked_user_id = data['CheckedUserID']
 
     response = {
         "killedUserId": None,
@@ -20,45 +20,48 @@ def action():  # put application's code here
         "checkedRole": False
     }
 
-    cur = db.cursor
+    cursor = db.cursor
 
-    if killedUserID != healedUserID:
-        cur.execute(f"Select UserID from chats join userschats uc on uc.chatid = chats.chatid join "
-                    f"users on users.userid = uc.userid where truechatid = '{trueChatID}' and TrueUserID = '{killedUserID}'")
-        id = cur.fetchall()[0]
-        cur.execute(f"UPDATE Users SET isAlive = false WHERE UserID = '{id}'")
-        response["killedUserId"] = killedUserID
+    if killed_user_id != healed_user_id:
+        cursor.execute(f"Select UserID from chats join userschats uc on uc.chatid = chats.chatid join "
+                    f"users on users.userid = uc.userid where truechatid = '{true_chat_id}' "
+                    f"and TrueUserID = '{killed_user_id}'")
+        generated_user_id = cursor.fetchall()[0]
+        cursor.execute(f"UPDATE Users SET isAlive = false WHERE UserID = '{generated_user_id}'")
+        response["killedUserId"] = killed_user_id
 
-    cur.execute(f"SELECT role FROM users WHERE TrueUserID ='{checkedUserID}';")
-    role = cur.fetchall()[0]
+    cursor.execute(f"SELECT role FROM users WHERE TrueUserID ='{checked_user_id}';")
+    role = cursor.fetchall()[0]
 
     if role == 4:
         response["checkedRole"] = True
 
-    response["isEndGame"] = api_functions.isEnd(cur, trueChatID)
+    response["isEndGame"] = api_functions.isEnd(cursor, true_chat_id)
+    db.close(cursor)
 
     return jsonify(response), 200
 
 
 @app.route('/create_chat', methods=["POST"])
 def create():
+    # TODO: обработка ошибок + логи
     tci = request.json['chatID']
     cursor = db.connection.cursor()
     db.query_ins_chat(tci, cursor)
+    db.close(cursor)
     return 'ok', 200
 
 
 @app.route('/start_game', methods=["POST"])
 def start():  # Команда принимает на вход
-    TCI = request.json['chatID']
-    userlist = request.json['userIDs']
+    tci = request.json['chatID']
+    user_list = request.json['userIDs']
     cursor = db.connection.cursor()
-    for idi in userlist:
-        db.query_ins_user(id, cursor)
+    for current_user in user_list:
+        db.query_ins_user(current_user, cursor)
     db.close(cursor)
-    resp = api_functions.role_distribution(userlist)
+    resp = api_functions.role_distribution(user_list)
     return "", resp
-
 
 
 if __name__ == '__main__':

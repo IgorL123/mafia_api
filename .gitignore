@@ -2,3 +2,4 @@ venv
 setiings.json
 .vscode
 __pycache__
+.idea/
