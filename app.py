@@ -47,7 +47,7 @@ def create():
     # TODO: обработка ошибок + логи
     tci = request.json['chatID']
     cursor = db.connection.cursor()
-    db.query_ins_chat(tci, cursor)
+    db.chat_add(tci, cursor)
     db.close(cursor)
     return 'ok', 200
 
@@ -58,7 +58,8 @@ def start():  # Команда принимает на вход
     user_list = request.json['userIDs']
     cursor = db.connection.cursor()
     for current_user in user_list:
-        db.query_ins_user(current_user, cursor)
+        db.user_add(current_user, tci, cursor)
+        db.connection.commit()
     db.close(cursor)
     resp = api_functions.role_distribution(user_list)
     return "", resp

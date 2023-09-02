@@ -1,28 +1,32 @@
 import psycopg2
-
-db_params = {
-    'host': '51.250.68.42',
-    'database': 'postgres',
-    'user': 'curator',
-    'password': '4oumQk'
-}
-
+from config import db_params
+# TODO: убрать обработку ошибок отсюда и перенести в app.py
 
 connection = psycopg2.connect(**db_params)  # запускаем один раз
 
 
-def query_ins_user(tui, curs):
+# TODO: убрать говнокод и написать нормальный запрос
+# TODO: научиться формировать запросы сразу на список пользователей, так будет быстрее
+def user_add(tui, tci, curs):
     try:
-        # Запрос добавления пользователя
         curs.execute(
-            f"""INSERT into public.Users(TrueUserID, role, isAlive) values ({tui}, 0)""")
+            f"""SELECT ChatID FROM Chats WHERE TrueChatId='{tci}'"""
+        )
+        chat_id = curs.fetchone()[0]
+        curs.execute(
+            f"""INSERT into public.Users(TrueUserID, role, isAlive) values ({tui}, 0, false) RETURNING UserID"""
+        )
+        user_id = curs.fetchone()[0]
         connection.commit()
+        curs.execute(
+            f"""INSERT into public.UsersChats(UserID, ChatID) values ({user_id}, {chat_id})"""
+        )
     except Exception as e:
         print("Ошибка:", e)
 
 
-def query_ins_chat(tci, curs):
-    try:  # Запрос добавления чата
+def chat_add(tci, curs):
+    try:
         curs.execute(
             f"""INSERT into public.Chats(TrueChatID, StateID) values ({tci}, 0)""")
         connection.commit()
@@ -30,24 +34,5 @@ def query_ins_chat(tci, curs):
         print("Ошибка:", e)
 
 
-def query_sel(query, curs):
-    try:
-        # Запрос вывода из БД
-        curs.execute("SELECT * FROM chats")
-        rows = curs.fetchall()
-
-        # for row in rows:
-        #     print(row)
-
-    except Exception as e:
-        print("Ошибка:", e)
-
-
-def query_change(x):
-    # Написать выдачу резов по ролям
-    pass
-
-
 def close(cur):
     cur.close()
-
