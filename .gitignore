@@ -1,5 +1,7 @@
 venv
+env
 setiings.json
 .vscode
 __pycache__
 .idea/
+config.py
